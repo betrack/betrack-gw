@@ -1,14 +1,20 @@
 {
-  "name": "mqtt-test",
+  "name": "betrack-gw",
   "version": "0.0.1",
-  "description": "Betrack MQTT test",
-  "main": "test.js",
+  "description": "Betrack GW for RPi 3",
+  "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "run": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http:github.com/betrack/betrack-gw"
   },
   "author": "Cranio",
   "license": "ISC",
   "dependencies": {
-    "mqtt": "^2.0.0"
+    "mqtt": "^2.0.0",
+    "johnny-five": "^0.9.39",
+    "raspi-io": "^6.0.1"
   }
 }
