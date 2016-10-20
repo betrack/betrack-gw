@@ -1,0 +1,14 @@
+{
+  "name": "mqtt-test",
+  "version": "0.0.1",
+  "description": "Betrack MQTT test",
+  "main": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Cranio",
+  "license": "ISC",
+  "dependencies": {
+    "mqtt": "^2.0.0"
+  }
+}
