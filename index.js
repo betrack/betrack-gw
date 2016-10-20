@@ -7,9 +7,10 @@ var board = new five.Board({
   io: new raspi()
 });
 
-//time.setHours(time.getHours()-24);
 var minutes = 0.5;
 var delay = minutes * 60 * 1000;
+
+var temperature = 0.0;
 
 client.on('connect', function() {
   console.log("MQTT connected");
@@ -18,26 +19,22 @@ client.on('connect', function() {
     var time = new Date();
     time.setHours(time.getHours()-3);
     var state = time.toISOString()+",";
-    if(temperature){
-      state = state + temperature.celsius.toFixed(1);
-    }
-    else{
-      state = state + getRandomArbitrary(5,10).toFixed(1);
-    }
+    state = state + temperature.celsius.toFixed(1);
   	state = state + ",-34.594113,-58.433810"; //Jufre 570, CABA
-    //client.publish("gw/ab:ab:ab:ab:ab:ab", state)
+    client.publish("gw/ab:ab:ab:ab:ab:ab", state)
     console.log(state);
   }, delay);
 });
 
 board.on("ready", function() {
-  var temperature = new five.Thermometer({
+  var thermometer = new five.Thermometer({
     controller: "BMP180",
     freq: 250
   });
 
-  temperature.on("change", function() {
+  thermometer.on("change", function() {
     console.log("Temperature change celsius: ", this.celsius);
+    temperature = this.celsius;
   });
 });
 
