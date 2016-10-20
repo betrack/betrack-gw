@@ -19,7 +19,7 @@ client.on('connect', function() {
     var time = new Date();
     time.setHours(time.getHours()-3);
     var state = time.toISOString()+",";
-    state = state + temperature.celsius.toFixed(1);
+    state = state + temperature.toFixed(1);
   	state = state + ",-34.594113,-58.433810"; //Jufre 570, CABA
     client.publish("gw/ab:ab:ab:ab:ab:ab", state)
     console.log(state);
