@@ -7,8 +7,8 @@ var board = new five.Board({
   io: new raspi()
 });
 
-var GWminutes = 0.5;
-var TAGminutes = 0.1;
+var GWminutes = 30;
+var TAGminutes = 5;
 
 var temperature = 0.0;
 
