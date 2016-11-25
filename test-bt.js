@@ -1,10 +1,13 @@
 var noble = require('noble');
 
 noble.on('stateChange', function(state) {
-  if (state === 'poweredOn')
+  if (state === 'poweredOn'){
+    console.log('BT address is', noble.address);
     noble.startScanning();
-  else
+  }
+  else{
     noble.stopScanning();
+  }
 });
 
 noble.on('discover', function(peripheral) { 
