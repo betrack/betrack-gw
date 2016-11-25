@@ -8,9 +8,30 @@ noble.on('stateChange', function(state) {
 });
 
 noble.on('discover', function(peripheral) { 
-  var macAddress = peripheral.uuid;
-  var rss = peripheral.rssi;
-  var localName = peripheral.advertisement.localName; 
-  console.log('found device: ', macAddress, ' ', localName, ' ', rss);
-  console.log(peripheral);
+  var address = peripheral.address;
+  var rssi = peripheral.rssi;
+  console.log('Found device: ', address, ' ', rssi);
+  var localName = peripheral.advertisement.localName;
+  if(localName){
+    console.log('Found beacon: ', localName);
+    explore(peripheral);
+  }
 });
+
+function explore(peripheral) {
+  peripheral.on('disconnect', function() {
+    console.log('Disconnected: ', peripheral.advertisement.localName);
+  });
+
+  peripheral.connect(function(error) {
+    if(error)
+      console.log(error);
+    else
+      peripheral.updateRssi(function(error, rssi){
+        if(error)
+          console.log(error);
+        else
+          console.log('Changed rssi: ',rssi);
+      });
+  });
+}
