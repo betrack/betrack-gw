@@ -4,7 +4,9 @@ var jsonfile = require('jsonfile');
 
 var bt = require('./bt.js');
 var location = require('./location');
-var temp = require('./temp');
+var temperature = require('./temp');
+
+var tempFile = temperature.file;
 
 var GWminutes = 1;
 var TAGminutes = 0.2;
@@ -23,8 +25,8 @@ client.on('connect', function() {
       }
     });
 
-    var temp =20.0;
-    jsonfile.readFile(temp.file, function(err, obj) {
+    var temp = 20.0;
+    jsonfile.readFile(tempFile, function(err, obj) {
       if(!err){
         temp = obj.temp;
       }
