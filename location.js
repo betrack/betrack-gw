@@ -6,7 +6,7 @@ var lon = -58.433810; //Jufre 570, CABA
 
 var jsonfile = require('jsonfile');
 const file = "location.json";
-jsonfile.readFile(location.file, function(err, obj) {
+jsonfile.readFile(file, function(err, obj) {
   if(!err){
     lat = obj.lat;
     lon = obj.lon;
