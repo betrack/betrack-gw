@@ -43,7 +43,7 @@ if(gps){
       });
     }
     else{
-      console.log('No fix');
+      console.log('Fix type',data.fixType);
     }
   });
 }

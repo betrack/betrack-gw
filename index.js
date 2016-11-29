@@ -6,8 +6,6 @@ var bt = require('./bt.js');
 var location = require('./location');
 var temperature = require('./temp');
 
-var tempFile = temperature.file;
-
 var GWminutes = 1;
 var TAGminutes = 0.2;
 
@@ -18,7 +16,7 @@ client.on('connect', function() {
 
     var time = new Date();
     time.setHours(time.getHours()-3);
-    var state = time.toISOString()+","+temp.temp.toFixed(1)+","+location.lat.toFixed(7)+","+location.lon.toFixed(7);
+    var state = time.toISOString()+","+temperature.temp.toFixed(1)+","+location.lat.toFixed(7)+","+location.lon.toFixed(7);
     client.publish("gw/"+bt.address, state);
     console.log(bt.address, state);
   }, GWminutes * 60 * 1000);
