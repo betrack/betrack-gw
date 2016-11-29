@@ -14,34 +14,11 @@ client.on('connect', function() {
   setInterval(function() {
     console.log('Gateway post every ' + GWminutes + ' minutes.');
 
-    var lat =-34.594113;
-    var lon =-58.433810; //Jufre 570, CABA
-    jsonfile.readFile(location.file, function(err, obj) {
-      if(!err){
-        lat = obj.lat;
-        lon = obj.lon;
-      }
-    });
-
-    var temp =20.0;
-    jsonfile.readFile(temp.file, function(err, obj) {
-      if(!err){
-        temp = obj.temp;
-      }
-    });
-
-    var address = "ab:ab:ab:ab:ab:ab";
-    jsonfile.readFile(bt.file, function(err, obj) {
-      if(!err){
-        temp = obj.address;
-      }
-    });
-
     var time = new Date();
     time.setHours(time.getHours()-3);
-    var state = time.toISOString()+","+temp.toFixed(1)+","+lat.toFixed(7)+","+lon.toFixed(7);
-    client.publish("gw/"+address, state);
-    console.log(state);
+    var state = time.toISOString()+","+temp.temp.toFixed(1)+","+location.lat.toFixed(7)+","+location.lon.toFixed(7);
+    client.publish("gw/"+bt.address, state);
+    console.log(bt.address, state);
   }, GWminutes * 60 * 1000);
 
   var packet = 0;

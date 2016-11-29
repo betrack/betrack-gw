@@ -6,8 +6,10 @@ var board = new five.Board({
 
 var jsonfile = require('jsonfile');
 const file = "temp.json";
+
+var temp = 20.0;
 module.exports = {
-    file: file
+    temp: temp
 };
 
 board.on("ready", function() {
@@ -18,7 +20,8 @@ board.on("ready", function() {
 
   thermometer.on("change", function() {
     console.log("Temperature change celsius: ", this.celsius);
-    var json = {temp: this.celsius};
+    temp = this.celsius;
+    var json = {temp: temp};
     jsonfile.writeFile(file,json,function(err){
       if(err)
         console.error(err);

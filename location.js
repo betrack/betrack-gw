@@ -3,8 +3,12 @@ var serialgps = require('serialgps');
 
 var jsonfile = require('jsonfile');
 const file = "location.json";
+
+var lat = -34.594113;
+var lon = -58.433810; //Jufre 570, CABA
 module.exports = {
-    file: file
+    lat: lat,
+    lon: lon
 };
 
 //U-Blox7 Device Specifics
@@ -20,14 +24,14 @@ if(gps){
     var latRAW = data.lat.split('.');
     var lonRAW = data.lon.split('.');
 
-    if(latRAW.length>0 && lonRAW.length>0){
+    if(data.fixType === 'fix' && latRAW.length>1 && lonRAW.length>1){
       var latDec = parseFloat(latRAW[0].slice(-2) + '.' + latRAW[1])/60;
-      var lat = parseInt(latRAW[0].slice(0,-2)) + latDec;
+      lat = parseInt(latRAW[0].slice(0,-2)) + latDec;
       if(data.latPole === 'S')
         lat *= -1;
 
       var lonDec = parseFloat(lonRAW[0].slice(-2) + '.' + lonRAW[1])/60;
-            var lon = parseInt(lonRAW[0].slice(0,-2)) + lonDec;
+      lon = parseInt(lonRAW[0].slice(0,-2)) + lonDec;
       if(data.lonPole === 'W')
         lon *= -1;
       console.log(lat,lon);
@@ -39,7 +43,7 @@ if(gps){
       });
     }
     else{
-      console.log(data.fixType);
+      console.log('No fix');
     }
   });
 }

@@ -2,14 +2,17 @@ var noble = require('noble');
 
 var jsonfile = require('jsonfile');
 const file = "bt.json";
+
+var address = "ab:ab:ab:ab:ab:ab";
 module.exports = {
-    file: file
+    address: address
 };
 
 noble.on('stateChange', function(state) {
   if(state === 'poweredOn'){
     console.log('BT address is', noble.address);
-    var json = {address: noble.address};
+    address = noble.address;
+    var json = {address: address};
     jsonfile.writeFile(file,json,function(err){
       if(err)
         console.error(err);
