@@ -4,7 +4,9 @@ var jsonfile = require('jsonfile');
 
 var bt = require('./bt.js');
 var location = require('./location');
-var temp = require('./temp');
+var temperature = require('./temp');
+
+var tempFile = temperature.file;
 
 var GWminutes = 1;
 var TAGminutes = 0.2;
