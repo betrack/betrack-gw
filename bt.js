@@ -4,14 +4,13 @@ var jsonfile = require('jsonfile');
 const file = "bt.json";
 
 var address = "ab:ab:ab:ab:ab:ab";
-module.exports = {
-    address: address
-};
+exports.address = address;
 
 noble.on('stateChange', function(state) {
   if(state === 'poweredOn'){
     console.log('BT address is', noble.address);
     address = noble.address;
+    exports.address = address;
     var json = {address: address};
     jsonfile.writeFile(file,json,function(err){
       if(err)

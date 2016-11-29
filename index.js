@@ -6,7 +6,7 @@ var bt = require('./bt.js');
 var location = require('./location');
 var temperature = require('./temp');
 
-var GWminutes = 1;
+var GWminutes = 0.01;
 var TAGminutes = 0.2;
 
 client.on('connect', function() {
