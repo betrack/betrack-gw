@@ -1,9 +1,15 @@
 var noble = require('noble');
 
+var address = "ab:ab:ab:ab:ab:ab";
+
 var jsonfile = require('jsonfile');
 const file = "bt.json";
+jsonfile.readFile(bt.file, function(err, obj) {
+  if(!err){
+    temp = obj.address;
+  }
+});
 
-var address = "ab:ab:ab:ab:ab:ab";
 exports.address = address;
 
 noble.on('stateChange', function(state) {

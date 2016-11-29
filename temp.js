@@ -4,10 +4,15 @@ var board = new five.Board({
   io: new raspi()
 });
 
+var temp = 20.0;
+
 var jsonfile = require('jsonfile');
 const file = "temp.json";
-
-var temp = 20.0;
+jsonfile.readFile(tempFile, function(err, obj) {
+  if(!err){
+    temp = obj.temp;
+  }
+});
 exports.temp = temp;
 
 board.on("ready", function() {
