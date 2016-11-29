@@ -9,6 +9,10 @@ var temperature = require('./temp');
 var GWminutes = 1;
 var TAGminutes = 0.2;
 
+setInterval(function() {
+  console.log(temperature);
+}, 1000);
+
 client.on('connect', function() {
   console.log("MQTT connected");
   setInterval(function() {
