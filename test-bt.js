@@ -1,8 +1,14 @@
 var noble = require('noble');
+console.log('State is',noble.state);
+console.log('Address is',noble.address);
+
+noble.on('addressChange', function(address) {
+    console.log('Address change', address);
+});
 
 noble.on('stateChange', function(state) {
+  console.log('State change',state);
   if (state === 'poweredOn'){
-    console.log('BT address is', noble.address);
     noble.startScanning();
   }
   else{
@@ -40,5 +46,6 @@ function explore(peripheral) {
 }
 
 setInterval(function(){
-	console.log(noble.state);
+  console.log('State is',noble.state);
+  console.log('Address is',noble.address);
 },1000);

@@ -12,18 +12,15 @@ jsonfile.readFile(file, function(err, obj) {
 
 exports.address = address;
 
-noble.on('addressChange', function(state) {
-    console.log('BT address is', noble.address);
-    address = noble.address;
-    exports.address = address;
-    var json = {address: address};
-    jsonfile.writeFile(file,json,function(err){
-      if(err)
-        console.error(err);
-    });
-});
-
 noble.on('stateChange', function(state) {
+  console.log('BT address is', noble.address);
+  address = noble.address;
+  exports.address = address;
+  var json = {address: address};
+  jsonfile.writeFile(file,json,function(err){
+    if(err)
+      console.error(err);
+  });
   if(state === 'poweredOn'){
     noble.startScanning();
   }
