@@ -3,7 +3,7 @@ var noble = require('noble');
 var address = "ab:ab:ab:ab:ab:ab";
 
 var jsonfile = require('jsonfile');
-const file = "bt.json";
+const file = "data/bt.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
     address = obj.address;
