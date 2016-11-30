@@ -23,7 +23,7 @@ noble.on('stateChange', function(state) {
       console.error(err);
   });
   if(state === 'poweredOn'){
-    noble.startScanning();
+    noble.startScanning([],true);
   }
   else{
     noble.stopScanning();

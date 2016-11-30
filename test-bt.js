@@ -9,7 +9,7 @@ noble.on('addressChange', function(address) {
 noble.on('stateChange', function(state) {
   console.log('State change',state);
   if (state === 'poweredOn'){
-    noble.startScanning();
+    noble.startScanning([],true);
   }
   else{
     noble.stopScanning();
