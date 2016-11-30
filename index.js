@@ -1,6 +1,8 @@
 var mqtt = require('mqtt');
 var client = mqtt.connect('mqtt://45.55.229.97');
 var jsonfile = require('jsonfile');
+var fsmonitor = require('fsmonitor');
+var del = require('node-delete');
 
 var bt = require('./bt.js');
 var location = require('./location');
@@ -12,11 +14,39 @@ var TAGminutes = 1;
 client.on('connect', function() {
   console.log("MQTT connected");
 
-  var time = new Date();
-  time.setHours(time.getHours()-3);
-  var state = time.toISOString()+","+temperature.temp.toFixed(1)+","+location.lat.toFixed(7)+","+location.lon.toFixed(7);
-  client.publish("gw/"+bt.address, state);
-  console.log(bt.address, state);
+  fsmonitor.watch('gw', null, function(change) {
+    change.addedFiles.forEach(function(file){
+      jsonfile.readFile('gw/'+ file, function(err, obj) {
+        if(err)
+          console.log(err);
+        else{
+          var state = obj.time+","+obj.temp.toFixed(1)+","+obj.lat.toFixed(7)+","+obj.lon.toFixed(7);
+          client.publish("gw/"+bt.address, state);
+          console.log(bt.address, state);
+          del('gw/' + file, function (err, paths) {
+            console.log('Deleted file', paths);
+          });
+        }
+      });
+    });
+  });
+
+  fsmonitor.watch('tag', null, function(change) {
+    change.addedFiles.forEach(function(file){
+      jsonfile.readFile('tag/'+ file, function(err, obj) {
+        if(err)
+          console.log(err);
+        else{
+          var state = obj.time+","+obj.temp.toFixed(1)+","+obj.batt.toFixed(1)+","+obj.packet;
+          client.publish("tag/"+obj.address+"/"+bt.address, state);
+          console.log(obj.address,bt.address, state);
+          del('tag/' + file, function (err, paths) {
+            console.log('Deleted file', paths);
+          });
+        }
+      });
+    });
+  });
 
   var packet = 0;
   setInterval(function() {
@@ -29,6 +59,10 @@ client.on('connect', function() {
     client.publish("tag/11:11:11:11:11:11/"+bt.address, state);
     console.log(bt.address,state);
   }, TAGminutes * 60 * 1000);
+});
+
+client.on('error', function(error) {
+  console.log(error);
 });
 
 setInterval(function() {
