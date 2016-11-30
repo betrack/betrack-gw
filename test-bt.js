@@ -38,3 +38,7 @@ function explore(peripheral) {
       });
   });
 }
+
+setInterval(function(){
+	console.log(noble.state);
+},1000);

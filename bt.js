@@ -12,8 +12,7 @@ jsonfile.readFile(file, function(err, obj) {
 
 exports.address = address;
 
-noble.on('stateChange', function(state) {
-  if(state === 'poweredOn'){
+noble.on('addressChange', function(state) {
     console.log('BT address is', noble.address);
     address = noble.address;
     exports.address = address;
@@ -22,6 +21,10 @@ noble.on('stateChange', function(state) {
       if(err)
         console.error(err);
     });
+});
+
+noble.on('stateChange', function(state) {
+  if(state === 'poweredOn'){
     noble.startScanning();
   }
   else{
