@@ -6,7 +6,8 @@ var jsonfile = require('jsonfile');
 const file = "bt.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
-    temp = obj.address;
+    address = obj.address;
+    exports.address = address;
   }
 });
 

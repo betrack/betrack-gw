@@ -19,10 +19,10 @@ noble.on('stateChange', function(state) {
 noble.on('discover', function(peripheral) { 
   var address = peripheral.address;
   var rssi = peripheral.rssi;
-  console.log('Found device: ', address, ' ', rssi);
   var localName = peripheral.advertisement.localName;
+  console.log('Found device', address, localName, rssi);
   if(localName){
-    console.log('Found beacon: ', localName);
+    console.log('Found beacon', localName);
     explore(peripheral);
   }
 });
@@ -45,7 +45,7 @@ function explore(peripheral) {
   });
 }
 
-setInterval(function(){
-  console.log('State is',noble.state);
-  console.log('Address is',noble.address);
-},1000);
+//setInterval(function(){
+//  console.log('State is',noble.state);
+//  console.log('Address is',noble.address);
+//},1000);
