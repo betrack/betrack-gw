@@ -38,7 +38,8 @@ client.on('connect', function() {
   chokidar.watch('tag',{
     persistent: true,
     ignored: /[\/\\]\./,
-    ignoreInitial: false
+    ignoreInitial: false,
+    awaitWriteFinish: true
   }).on('add', function(event, path) {
     console.log(event);
     jsonfile.readFile(event, function(err, obj) {
