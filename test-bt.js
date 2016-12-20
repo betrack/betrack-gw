@@ -21,6 +21,7 @@ noble.on('discover', function(peripheral) {
   var rssi = peripheral.rssi;
   var localName = peripheral.advertisement.localName;
   console.log('Found device', address, localName, rssi);
+  console.log(peripheral.advertisement);
   if(localName){
     console.log('Found beacon', localName);
     explore(peripheral);
