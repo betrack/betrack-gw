@@ -13,11 +13,6 @@ jsonfile.readFile(file, function(err, obj) {
 
 exports.address = address;
 
-//setTimeout(function() {
-//  console.log(noble.state);
-//  noble.startScanning([],true); 
-//}, 2000);
-
 noble.on('stateChange', function(state) {
   console.log('BT address is', noble.address);
   address = noble.address;
@@ -35,32 +30,35 @@ noble.on('stateChange', function(state) {
   }
 });
 
+var TAGminutes = 0.1;
+var packet = 0;
+setInterval(function() {
+  console.log('Tag post every ' + TAGminutes + ' minutes.');
+  var peripheral = [];
+  peripheral.address = "11:11:11:11:11:11";
+  peripheral.packet = (packet++);
+  save(peripheral);
+}, TAGminutes * 60 * 1000);
+
 noble.on('discover', function(peripheral) { 
   var address = peripheral.address;
   var rssi = peripheral.rssi;
-  console.log('Found device: ', address, ' ', rssi);
+  //console.log('Found device: ', address, ' ', rssi);
   var localName = peripheral.advertisement.localName;
   if(localName){
     console.log('Found beacon: ', localName);
-    explore(peripheral);
+    console.log(peripheral);
+    save(peripheral);
   }
 });
 
-function explore(peripheral) {
-  peripheral.on('disconnect', function() {
-    console.log('Disconnected: ', peripheral.advertisement.localName);
+function save(peripheral) {
+  var time = new Date();
+  var timestamp = time.toUTCString();
+  time.setHours(time.getHours()-3);
+  var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:peripheral.packet};
+  jsonfile.writeFile('tag/'+ timestamp + '.json',json,function(err){
+    if(err)
+      console.error(err);
   });
-
-/*  peripheral.connect(function(error) {
-    if(error)
-      console.log(error);
-    else
-      peripheral.updateRssi(function(error, rssi){
-        if(error)
-          console.log(error);
-        else
-          console.log('Changed rssi: ',rssi);
-      });
-  });
-*/
 }
