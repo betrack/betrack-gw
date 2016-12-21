@@ -13,6 +13,11 @@ jsonfile.readFile(file, function(err, obj) {
 
 exports.address = address;
 
+//setTimeout(function() {
+//  console.log(noble.state);
+//  noble.startScanning([],true); 
+//}, 2000);
+
 noble.on('stateChange', function(state) {
   console.log('BT address is', noble.address);
   address = noble.address;
@@ -46,7 +51,7 @@ function explore(peripheral) {
     console.log('Disconnected: ', peripheral.advertisement.localName);
   });
 
-  peripheral.connect(function(error) {
+/*  peripheral.connect(function(error) {
     if(error)
       console.log(error);
     else
@@ -57,4 +62,5 @@ function explore(peripheral) {
           console.log('Changed rssi: ',rssi);
       });
   });
+*/
 }
