@@ -8,8 +8,8 @@ var bt = require('./bt.js');
 var location = require('./location');
 var temperature = require('./temp');
 
-var GWminutes = 0.1;
-var TAGminutes = 0.2;
+var GWminutes = 1;
+var TAGminutes = 0.5;
 
 client.on('connect', function() {
   console.log("MQTT connected");
