@@ -36,6 +36,7 @@ setInterval(function() {
   console.log('Tag post every ' + TAGminutes + ' minutes.');
   var peripheral = [];
   peripheral.address = "11:11:11:11:11:11";
+  peripheral.rssi = 0;
   peripheral.packet = (packet++);
   save(peripheral);
 }, TAGminutes * 60 * 1000);
