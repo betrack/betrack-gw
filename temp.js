@@ -1,8 +1,5 @@
-var raspi = require('raspi-io');
-var five = require('johnny-five');
-var board = new five.Board({
-  io: new raspi()
-});
+var bmp085 = require('bmp085'),
+    barometer = new bmp085();
 
 var temp = 20.0;
 
@@ -15,15 +12,15 @@ jsonfile.readFile(file, function(err, obj) {
 });
 exports.temp = temp;
 
-board.on("ready", function() {
-  var thermometer = new five.Thermometer({
-    controller: "BMP180",
-    freq: 250
-  });
+barometer.read(function (data) {
+    console.log("Temperature:", data.temperature);
+});
 
-  thermometer.on("change", function() {
-    console.log("Temperature change celsius: ", this.celsius);
-    temp = this.celsius;
+var TEMPminutes = 0.1;
+setInterval(function() {
+  barometer.read(function (data) {
+    console.log("Temperature:", data.temperature);
+    temp = data.temperature;
     exports.temp = temp;
     var json = {temp: temp};
     jsonfile.writeFile(file,json,function(err){
@@ -31,4 +28,4 @@ board.on("ready", function() {
         console.error(err);
     });
   });
-});
+}, TEMPminutes * 60 * 1000);
