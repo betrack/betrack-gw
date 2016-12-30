@@ -30,7 +30,7 @@ noble.on('stateChange', function(state) {
   }
 });
 
-var TAGminutes = 0.1;
+/*var TAGminutes = 0.1;
 var packet = 0;
 setInterval(function() {
   console.log('Tag post every ' + TAGminutes + ' minutes.');
@@ -39,7 +39,7 @@ setInterval(function() {
   peripheral.rssi = 0;
   peripheral.packet = (packet++);
   save(peripheral);
-}, TAGminutes * 60 * 1000);
+}, TAGminutes * 60 * 1000);*/
 
 noble.on('discover', function(peripheral) { 
   var address = peripheral.address;
