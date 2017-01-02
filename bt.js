@@ -46,8 +46,7 @@ noble.on('discover', function(peripheral) {
   //console.log('Found device: ', address, ' ', rssi);
   var localName = peripheral.advertisement.localName;
   if(localName){
-    console.log('Found beacon: ', localName);
-    console.log(peripheral);
+    console.log(peripheral.advertisement);
     save(peripheral);
   }
 });
