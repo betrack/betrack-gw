@@ -18,7 +18,7 @@
     "mqtt": "^2.0.0",
     "noble": "^1.7.0",
     "node-delete": "^0.1.2",
-    "serialgps": "https://github.com/jvelazqueztraut/node-serialgps",
+    "serialgps": "git+https://git@github.com/jvelazqueztraut/node-serialgps.git",
     "usb": "^1.2.0",
     "bmp085": "^0.4.0"
   }
