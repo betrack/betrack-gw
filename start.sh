@@ -13,6 +13,10 @@ if ! /usr/bin/hciattach /dev/ttyAMA0 bcm43xx 921600 noflow -; then
 fi
 hciconfig hci0 up
 
+echo "Creating f gw and tag folders in data"
+mkdir -p /data/gw
+mkdir -p /data/tag
+
 echo "Running main app"
 node index.js
 
