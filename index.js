@@ -38,7 +38,7 @@ client.on('connect', function() {
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.lat.toFixed(7)+","+obj.lon.toFixed(7);
         client.publish("gw/"+bt.address, state);
         console.log(bt.address, state);
-        del(event, function (err, files) {
+        del(event, {options.force:true}, function (err, files) {
           //console.log('Deleted file', files);
         });
       }
@@ -59,7 +59,7 @@ client.on('connect', function() {
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.batt.toFixed(1)+","+obj.packet;
         client.publish("tag/"+obj.address+"/"+bt.address, state);
         console.log(obj.address,bt.address, state);
-        del(event, function (err, files) {
+        del(event, {options.force:true}, function (err, files) {
           //console.log('Deleted file', files);
         });
       }
