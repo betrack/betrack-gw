@@ -1,4 +1,10 @@
 #!/bin/bash
+#Set the root password as root if not set as an ENV variable
+export PASSWD=${PASSWD:=root}
+echo "Spawn dropbear"
+echo "root:$PASSWD" | chpasswd
+dropbear -E -F &
+
 echo "Turning on USB dev on RPI3"
 udevd &
 udevadm trigger
