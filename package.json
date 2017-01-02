@@ -4,7 +4,7 @@
   "description": "Betrack GW for RPi 3",
   "main": "index.js",
   "scripts": {
-    "run": "sudo node index.js"
+    "start": "bash start.sh"
   },
   "repository": {
     "type": "git",
@@ -14,13 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "chokidar": "^1.6.1",
-    "johnny-five": "^0.9.39",
     "jsonfile": "^2.4.0",
     "mqtt": "^2.0.0",
     "noble": "^1.7.0",
     "node-delete": "^0.1.2",
-    "raspi-io": "^6.0.1",
-    "serialgps": "^0.0.1",
-    "usb": "^1.2.0"
+    "serialgps": "https://github.com/jvelazqueztraut/node-serialgps",
+    "usb": "^1.2.0",
+    "bmp085": "^0.4.0"
   }
 }

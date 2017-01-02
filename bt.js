@@ -1,17 +1,16 @@
 var noble = require('noble');
 
 var address = "ab:ab:ab:ab:ab:ab";
+exports.address = address;
 
 var jsonfile = require('jsonfile');
-const file = "data/bt.json";
+const file = "/data/bt.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
     address = obj.address;
     exports.address = address;
   }
 });
-
-exports.address = address;
 
 noble.on('stateChange', function(state) {
   console.log('BT address is', noble.address);
@@ -30,15 +29,16 @@ noble.on('stateChange', function(state) {
   }
 });
 
-var TAGminutes = 0.1;
+/*var TAGminutes = 0.1;
 var packet = 0;
 setInterval(function() {
   console.log('Tag post every ' + TAGminutes + ' minutes.');
   var peripheral = [];
   peripheral.address = "11:11:11:11:11:11";
+  peripheral.rssi = 0;
   peripheral.packet = (packet++);
   save(peripheral);
-}, TAGminutes * 60 * 1000);
+}, TAGminutes * 60 * 1000);*/
 
 noble.on('discover', function(peripheral) { 
   var address = peripheral.address;
@@ -57,7 +57,7 @@ function save(peripheral) {
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
   var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:peripheral.packet};
-  jsonfile.writeFile('tag/'+ timestamp + '.json',json,function(err){
+  jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
   });

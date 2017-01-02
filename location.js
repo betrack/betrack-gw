@@ -3,18 +3,19 @@ var serialgps = require('serialgps');
 
 var lat = -34.594113;
 var lon = -58.433810; //Jufre 570, CABA
+exports.lat = lat;
+exports.lon = lon;
 
 var jsonfile = require('jsonfile');
-const file = "data/location.json";
+const file = "/data/location.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
     lat = obj.lat;
     lon = obj.lon;
+    exports.lat = lat;
+  exports.lon = lon;
   }
 });
-
-exports.lat = lat;
-exports.lon = lon;
 
 //U-Blox7 Device Specifics
 var VID = 5446;

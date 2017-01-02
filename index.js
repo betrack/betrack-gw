@@ -15,7 +15,7 @@ setInterval(function() {
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
   var json = {time: time.toISOString(), temp: temperature.temp, lat: location.lat, lon: location.lon};
-  jsonfile.writeFile('gw/'+ timestamp + '.json',json,function(err){
+  jsonfile.writeFile('/data/gw/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
   });
@@ -24,7 +24,7 @@ setInterval(function() {
 client.on('connect', function() {
   console.log("MQTT connected");
 
-  chokidar.watch('gw',{
+  chokidar.watch('/data/gw',{
     persistent: true,
     ignored: /[\/\\]\./,
     ignoreInitial: false,
@@ -45,7 +45,7 @@ client.on('connect', function() {
     });
   });
 
-  chokidar.watch('tag',{
+  chokidar.watch('/data/tag',{
     persistent: true,
     ignored: /[\/\\]\./,
     ignoreInitial: false,
