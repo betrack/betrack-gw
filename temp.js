@@ -4,7 +4,7 @@ var bmp085 = require('bmp085'),
 var temp = 20.0;
 
 var jsonfile = require('jsonfile');
-const file = "data/temp.json";
+const file = "/data/temp.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
     temp = obj.temp;

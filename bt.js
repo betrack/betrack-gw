@@ -3,7 +3,7 @@ var noble = require('noble');
 var address = "ab:ab:ab:ab:ab:ab";
 
 var jsonfile = require('jsonfile');
-const file = "data/bt.json";
+const file = "/data/bt.json";
 jsonfile.readFile(file, function(err, obj) {
   if(!err){
     address = obj.address;
@@ -58,7 +58,7 @@ function save(peripheral) {
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
   var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:peripheral.packet};
-  jsonfile.writeFile('data/tag/'+ timestamp + '.json',json,function(err){
+  jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
   });
