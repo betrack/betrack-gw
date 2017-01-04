@@ -4,25 +4,35 @@
 # Note the node:latest for i2c
 FROM resin/%%RESIN_MACHINE_NAME%%-node:latest
 
-# use apt-get if you need to install dependencies
-RUN apt-get update
-RUN apt-get install libudev-dev libusb-dev 
-#wget python make g++
-
-# Install Dropbear
-RUN apt-get install -yq --no-install-recommends dropbear
-
-# add the key for foundation repository
+# Add the key for foundation repository
 RUN wget http://archive.raspberrypi.org/debian/raspberrypi.gpg.key -O - | sudo apt-key add -
 
-# add apt source of the foundation repository
+# Add apt source of the foundation repository
 # we need this source because bluez needs to be patched in order to work with RPi3
 # issue #1314: How to get BT working on Pi3B. by clivem in raspberrypi/linux on GitHub
 RUN sed -i '1s#^#deb http://archive.raspberrypi.org/debian jessie main\n#' /etc/apt/sources.list
 RUN apt-get update
 
-# install required bluetooth packages
+# Install required bluetooth packages
 RUN apt-get install bluez bluez-firmware
+
+# Install dependencies for node-usb and node-serialport
+RUN apt-get install libudev-dev libusb-dev 
+#wget python make g++
+
+# Install Dropbear for SSH
+RUN apt-get install -yq --no-install-recommends dropbear
+
+# Install dependencies for resin-wifi-connect
+RUN apt-get install -yq --no-install-recommends \
+    dnsmasq \
+    hostapd \
+    iproute2 \
+    iw \
+    libdbus-1-dev \
+    libexpat-dev \
+    rfkill && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Defines our working directory in container
 WORKDIR /usr/src/app
@@ -39,6 +49,16 @@ COPY . ./
 
 # Enable systemd init system in container
 ENV INITSYSTEM on
+
+# Install resin-wifi-connect
+ENV RESIN_WIFI_CONNECT_VERSION v2.0.1
+RUN git clone --branch $RESIN_WIFI_CONNECT_VERSION --depth 1 https://github.com/resin-io/resin-wifi-connect.git && \
+    cd resin-wifi-connect && \
+    JOBS=MAX npm install --unsafe-perm --production && \
+    npm cache clean && \
+    ./node_modules/.bin/bower --allow-root install && \
+    ./node_modules/.bin/bower --allow-root cache clean && \
+    ./node_modules/.bin/coffee -c ./src
 
 # server.js will run when container starts up on the device
 CMD ["npm", "start"]

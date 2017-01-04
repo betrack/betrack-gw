@@ -23,6 +23,14 @@ echo "Creating f gw and tag folders in data"
 mkdir -p /data/gw
 mkdir -p /data/tag
 
+echo "Resin-wifi-connect"
+export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+sleep 1
+node resin-wifi-connect/src/app.js --clear=false
+
+# At this point the WiFi connection has been configured and the device has
+# internet - unless the configured WiFi connection is no longer available.
+
 echo "Running main app"
 node index.js
 
