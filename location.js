@@ -27,30 +27,34 @@ if(gps){
   //TO-DO: Parse serial port error
   //Monitor for GPS data
   gps.on('fix', function(data) {
-    var latRAW = data.lat.split('.');
-    var lonRAW = data.lon.split('.');
+    var latRaw = data.lat.split('.');
+    var lonRaw = data.lon.split('.');
 
-    if(data.fixType === 'fix' && latRAW.length>1 && lonRAW.length>1){
-      var latDec = parseFloat(latRAW[0].slice(-2) + '.' + latRAW[1])/60;
-      lat = parseInt(latRAW[0].slice(0,-2)) + latDec;
+    if(data.fixType === 'fix' && latRaw.length>1 && lonRaw.length>1){
+      var latDec = parseFloat(latRaw[0].slice(-2) + '.' + latRaw[1])/60;
+      var latNew = parseInt(latRaw[0].slice(0,-2)) + latDec;
       if(data.latPole === 'S')
-        lat *= -1;
+        latNew *= -1;
 
-      var lonDec = parseFloat(lonRAW[0].slice(-2) + '.' + lonRAW[1])/60;
-      lon = parseInt(lonRAW[0].slice(0,-2)) + lonDec;
+      var lonDec = parseFloat(lonRaw[0].slice(-2) + '.' + lonRaw[1])/60;
+      var lonNew = parseInt(lonRaw[0].slice(0,-2)) + lonDec;
       if(data.lonPole === 'W')
-        lon *= -1;
-      console.log(lat,lon);
-      exports.lat=lat;
-      exports.lon=lon;
-      var json = {lat: lat, lon: lon};
+        lonNew *= -1;
+      if(Math.abs(lat-latNew)>0.0001 || Math.abs(lon-lonNew)>0.0001){
+        lat=latNew;
+        lon=lonNew;
+        console.log(lat,lon);
+      }
+      exports.lat=latNew;
+      exports.lon=lonNew;
+      var json = {lat: latNew, lon: lonNew};
       jsonfile.writeFile(file,json,function(err){
         if(err)
           console.error(err);
       });
     }
     else{
-      console.log('Fix type',data.fixType);
+      //console.log('Fix type',data.fixType);
     }
   });
 }
