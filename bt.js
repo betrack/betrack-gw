@@ -51,11 +51,13 @@ noble.on('discover', function(peripheral) {
   }
 });
 
+var packets = 0;
+
 function save(peripheral) {
   var time = new Date();
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
-  var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:peripheral.packet};
+  var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:(packets++)};
   jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
