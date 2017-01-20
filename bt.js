@@ -45,19 +45,23 @@ noble.on('discover', function(peripheral) {
   var rssi = peripheral.rssi;
   //console.log('Found device: ', address, ' ', rssi);
   var localName = peripheral.advertisement.localName;
-  if(localName){
-    console.log(peripheral.advertisement);
-    save(peripheral);
+  if(localName === 'Bt'){
+    console.log('Found Bt device:', address, ' Rssi:', rssi);
+    save(peripheral.advertisement);
   }
 });
 
 var packets = 0;
 
-function save(peripheral) {
+function save(advertisement) {
+  var buffer = advertisement.serviceData[0].data;
+  var batt = buffer.readUIntBE(1, 1);
+  var temp = buffer.readIntBE(3, 1);
+  console.log('Batt:', batt, ' Temp:', temp);
   var time = new Date();
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
-  var json = {address:peripheral.address, time: time.toISOString(), temp:peripheral.rssi, batt: 85, packet:(packets++)};
+  var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:(packets++)};
   jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
