@@ -27,5 +27,15 @@ function readTemp(){
     setTimeout(readTemp, TEMPminutes * 60 * 1000);
   });
 }
-// start the cycle
-readTemp();
+
+var rasp2c = require('rasp2c');
+ 
+// Detect devices on the I2C Bus 
+rasp2c.detect(function(err, result) {
+  if (err) {
+    console.log(err);
+  } else {
+    // start the cycle
+    readTemp();
+  }
+});

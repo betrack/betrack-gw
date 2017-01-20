@@ -13,13 +13,14 @@
   "author": "Cranio",
   "license": "ISC",
   "dependencies": {
+    "bmp085": "^0.4.0",
     "chokidar": "^1.6.1",
     "jsonfile": "^2.4.0",
     "mqtt": "^2.0.0",
     "noble": "^1.7.0",
     "node-delete": "^0.1.2",
+    "rasp2c": "0.0.3",
     "serialgps": "git+https://git@github.com/jvelazqueztraut/node-serialgps.git",
-    "usb": "^1.2.0",
-    "bmp085": "^0.4.0"
+    "usb": "^1.2.0"
   }
 }
