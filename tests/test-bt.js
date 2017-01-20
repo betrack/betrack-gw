@@ -29,21 +29,15 @@ noble.on('discover', function(peripheral) {
 });
 
 function explore(peripheral) {
-  peripheral.on('disconnect', function() {
-    console.log('Disconnected: ', peripheral.advertisement.localName);
-  });
-
-  peripheral.connect(function(error) {
-    if(error)
-      console.log(error);
-    else
-      peripheral.updateRssi(function(error, rssi){
-        if(error)
-          console.log(error);
-        else
-          console.log('Changed rssi: ',rssi);
-      });
-  });
+  console.log(peripheral.advertisement.serviceData);
+  console.log(peripheral.advertisement.serviceData[0].data);
+  console.log(peripheral.advertisement.serviceData[0].data[1]);
+  console.log(peripheral.advertisement.serviceData[0].data[3]);
+  var buffer = peripheral.advertisement.serviceData[0].data;
+  var batt = buffer.readUIntBE(1, 1);
+  var temp = buffer.readIntBE(3, 1);
+  console.log(batt);
+  console.log(temp);
 }
 
 //setInterval(function(){
