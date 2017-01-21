@@ -37,6 +37,13 @@ RUN apt-get install -yq --no-install-recommends \
     rfkill && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# Enable systemd init system in container
+ENV INITSYSTEM on
+
+# Defines our working directory in container
+WORKDIR /usr/src/app
+
 # Install resin-wifi-connect
 ENV RESIN_WIFI_CONNECT_VERSION v2.0.1
 RUN git clone --branch $RESIN_WIFI_CONNECT_VERSION --depth 1 https://github.com/resin-io/resin-wifi-connect.git && \
@@ -47,9 +54,6 @@ RUN git clone --branch $RESIN_WIFI_CONNECT_VERSION --depth 1 https://github.com/
     ./node_modules/.bin/bower --allow-root cache clean && \
     ./node_modules/.bin/coffee -c ./src
 
-# Defines our working directory in container
-WORKDIR /usr/src/app
-
 # Copies the package.json first for better cache on later pushes
 COPY package.json package.json
 
@@ -59,9 +63,6 @@ RUN JOBS=MAX npm install --production --unsafe-perm && npm cache clean && rm -rf
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
-
-# Enable systemd init system in container
-ENV INITSYSTEM on
 
 # server.js will run when container starts up on the device
 CMD ["npm", "start"]
