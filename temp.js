@@ -40,4 +40,7 @@ wire.scan(function(err, data) {
     // start the cycle
     readTemp();
   }
+  else{
+    console.log('No i2c temperature sensor found.');
+  }
 });
