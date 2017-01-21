@@ -1,8 +1,8 @@
 #!/bin/bash
 #Set the root password as root if not set as an ENV variable
-export PASSWD=${PASSWD:=root}
+export SSH_PASSWD=${SSH_PASSWD:=root}
 echo "Spawn dropbear"
-echo "root:$PASSWD" | chpasswd
+echo "root:$SSH_PASSWD" | chpasswd
 dropbear -E -F &
 
 echo "Turning on USB dev on RPI3"
