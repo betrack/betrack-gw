@@ -1,6 +1,6 @@
 var noble = require('noble');
 
-var address = "ab:ab:ab:ab:ab:ab";
+var address = process.env.BETRACK_ADDRESS;
 exports.address = address;
 
 var jsonfile = require('jsonfile');

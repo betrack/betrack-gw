@@ -1,8 +1,8 @@
 var usb = require('usb');
 var serialgps = require('serialgps');
 
-var lat = -34.594113;
-var lon = -58.433810; //Jufre 570, CABA
+var lat = process.env.BETRACK_LATITUDE;
+var lon = process.env.BETRACK_LONGITUDE;
 exports.lat = lat;
 exports.lon = lon;
 
