@@ -47,14 +47,14 @@ noble.on('discover', function(peripheral) {
   var localName = peripheral.advertisement.localName;
   if(localName === 'Bt'){
     console.log('Found Bt device:', address, ' Rssi:', rssi);
-    save(peripheral.advertisement);
+    save(peripheral);
   }
 });
 
 var packets = 0;
 
-function save(advertisement) {
-  var buffer = advertisement.serviceData[0].data;
+function save(peripheral) {
+  var buffer = peripheral.advertisement.serviceData[0].data;
   var batt = buffer.readUIntBE(1, 1);
   var temp = buffer.readIntBE(3, 1);
   console.log('Batt:', batt, ' Temp:', temp);
