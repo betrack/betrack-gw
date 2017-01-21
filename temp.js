@@ -1,7 +1,7 @@
 var bmp085 = require('bmp085'),
     barometer = new bmp085();
 
-var temp = process.env.BETRACK_TEMPERATURE;
+var temp = parseFloat(process.env.BETRACK_TEMPERATURE);
 exports.temp = temp;
 
 var jsonfile = require('jsonfile');

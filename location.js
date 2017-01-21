@@ -1,8 +1,8 @@
 var usb = require('usb');
 var serialgps = require('serialgps');
 
-var lat = process.env.BETRACK_LATITUDE;
-var lon = process.env.BETRACK_LONGITUDE;
+var lat = parseFloat(process.env.BETRACK_LATITUDE);
+var lon = parseFloat(process.env.BETRACK_LONGITUDE);
 exports.lat = lat;
 exports.lon = lon;
 
