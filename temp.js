@@ -28,13 +28,15 @@ function readTemp(){
   });
 }
 
-var rasp2c = require('rasp2c');
- 
-// Detect devices on the I2C Bus 
-rasp2c.detect(function(err, result) {
+var i2c = require('i2c');
+var address = 0x77;
+var wire = new i2c(address, {device: '/dev/i2c-1'}); // point to your i2c addre$
+
+wire.scan(function(err, data) {
   if (err) {
     console.log(err);
-  } else {
+  } 
+  else if(data.length){
     // start the cycle
     readTemp();
   }

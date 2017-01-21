@@ -19,7 +19,6 @@
     "mqtt": "^2.0.0",
     "noble": "^1.7.0",
     "node-delete": "^0.1.2",
-    "rasp2c": "0.0.3",
     "serialgps": "git+https://git@github.com/jvelazqueztraut/node-serialgps.git",
     "usb": "^1.2.0"
   }
