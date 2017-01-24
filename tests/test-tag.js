@@ -10,13 +10,13 @@ client.on('connect', function() {
   for(var i = 0; i < 1; i++){
   	var state;
   	if(i<20){
-  		state = time.toISOString()+","+getRandomArbitrary(0,3).toFixed(1)+",85,1000";
+  		state = time.toISOString()+","+getRandomArbitrary(5,10).toFixed(1)+",99,1000";
   	}else if(i<40){
   		state = time.toISOString()+","+getRandomArbitrary(16,22).toFixed(1)+",85,1000";
   	}else{
   		state = time.toISOString()+","+getRandomArbitrary(0,4).toFixed(1)+",85,1000";
   	}
-  	client.publish("tag/11:11:11:11:11:11/cc:cc:cc:cc:cc:cc", state);
+  	client.publish("tag/f2:54:5f:06:a4:74/b8:27:eb:e4:6f:f9", state);
   	console.log(state);
   	wait(100);
   	time.setMinutes(time.getMinutes()+30);
