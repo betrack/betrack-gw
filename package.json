@@ -13,6 +13,13 @@
   "author": "Cranio",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.2",
+    "bower": "^1.7.9",
+    "coffee-script": "~1.9.3",
+    "dbus": "^0.2.19",
+    "express": "^4.14.0",
+    "lodash": "^4.16.4",
     "bmp085": "^0.4.0",
     "chokidar": "^1.6.1",
     "jsonfile": "^2.4.0",

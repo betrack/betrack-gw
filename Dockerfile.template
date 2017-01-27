@@ -34,9 +34,8 @@ RUN apt-get install -yq --no-install-recommends \
     iw \
     libdbus-1-dev \
     libexpat-dev \
-    rfkill && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
+    rfkill \
+    && rm -rf /var/lib/apt/lists/*
 
 # Enable systemd init system in container
 ENV INITSYSTEM on
@@ -44,25 +43,25 @@ ENV INITSYSTEM on
 # Defines our working directory in container
 WORKDIR /usr/src/app
 
-# Install resin-wifi-connect
-ENV RESIN_WIFI_CONNECT_VERSION v2.0.1
-RUN git clone --branch $RESIN_WIFI_CONNECT_VERSION --depth 1 https://github.com/resin-io/resin-wifi-connect.git && \
-    cd resin-wifi-connect && \
-    JOBS=MAX npm install --unsafe-perm --production && \
-    npm cache clean && \
-    ./node_modules/.bin/bower --allow-root install && \
-    ./node_modules/.bin/bower --allow-root cache clean && \
-    ./node_modules/.bin/coffee -c ./src
-
 # Copies the package.json first for better cache on later pushes
-COPY package.json package.json
+COPY package.json ./
 
 # This install npm dependencies on the resin.io build server,
 # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache clean && rm -rf /tmp/*
 
+# Copies the bower.json to install dep
+COPY bower.json .bowerrc ./
+
+# Install bower dep
+RUN ./node_modules/.bin/bower --allow-root install \
+    && ./node_modules/.bin/bower --allow-root cache clean
+
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
+
+# Run resin-wifi-connect coffee script
+RUN ./node_modules/.bin/coffee -c ./src
 
 # server.js will run when container starts up on the device
 CMD ["npm", "start"]
