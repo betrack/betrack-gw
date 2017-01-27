@@ -58,10 +58,10 @@ function save(peripheral) {
   var packet = buffer.readIntBE(6, 4);
   console.log('Batt:', batt, ' Temp:', temp, ' Packet:', packet);
   var time = new Date();
-  var timestamp = time.toUTCString();
+  var timestamp = peripheral.address + '_' + time.toISOString();
   time.setHours(time.getHours()-3);
   var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:packet};
-  jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
+  jsonfile.writeFile('/data/tag/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
     if(err)
       console.error(err);
   });
