@@ -26,7 +26,7 @@ mkdir -p /data/tag
 echo "Resin-wifi-connect"
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 sleep 1
-node src/app.js --clear=true
+node src/app.js --clear=false
 
 # At this point the WiFi connection has been configured and the device has
 # internet - unless the configured WiFi connection is no longer available.
