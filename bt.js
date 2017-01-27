@@ -51,17 +51,16 @@ noble.on('discover', function(peripheral) {
   }
 });
 
-var packets = 0;
-
 function save(peripheral) {
   var buffer = peripheral.advertisement.serviceData[0].data;
   var batt = buffer.readUIntBE(1, 1);
-  var temp = buffer.readIntBE(3, 1);
-  console.log('Batt:', batt, ' Temp:', temp);
+  var temp = buffer.readIntBE(3, 2);
+  var packet = buffer.readIntBE(6, 4);
+  console.log('Batt:', batt, ' Temp:', temp, ' Packet:', packet);
   var time = new Date();
   var timestamp = time.toUTCString();
   time.setHours(time.getHours()-3);
-  var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:(packets++)};
+  var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:packet};
   jsonfile.writeFile('/data/tag/'+ timestamp + '.json',json,function(err){
     if(err)
       console.error(err);
