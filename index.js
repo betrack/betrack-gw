@@ -13,10 +13,10 @@ var GWminutes = 1;
 setInterval(function() {
   console.log('Gateway status every ' + GWminutes + ' minutes.');
   var time = new Date();
-  var timestamp = time.toUTCString();
+  var timestamp = time.toISOString();
   time.setHours(time.getHours()-3);
   var json = {time: time.toISOString(), temp: temperature.temp, lat: location.lat, lon: location.lon};
-  jsonfile.writeFile('/data/gw/'+ timestamp + '.json',json,function(err){
+  jsonfile.writeFile('/data/gw/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
     if(err)
       console.error(err);
   });
