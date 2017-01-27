@@ -47,7 +47,8 @@ noble.on('discover', function(peripheral) {
   var localName = peripheral.advertisement.localName;
   if(localName === 'Bt'){
     console.log('Found Bt device:', address, ' Rssi:', rssi);
-    save(peripheral);
+    if(peripheral.advertisement.serviceData[0].data)
+      save(peripheral);
   }
 });
 
