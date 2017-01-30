@@ -59,11 +59,28 @@ function save(peripheral) {
   var packet = buffer.readIntBE(6, 4);
   console.log('Batt:', batt, ' Temp:', temp, ' Packet:', packet);
   var time = new Date();
-  var timestamp = peripheral.address + '_' + time.toISOString();
-  time.setHours(time.getHours()-3);
-  var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:packet};
-  jsonfile.writeFile('/data/tag/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
-    if(err)
-      console.error(err);
-  });
+  if( addDevice(peripheral.address, time) ){
+    var timestamp = peripheral.address + '_' + time.toISOString();
+    time.setHours(time.getHours()-3);
+    var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:packet};
+    jsonfile.writeFile('/data/tag/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
+      if(err)
+        console.error(err);
+    });
+  }
+}
+
+var devices = {};
+
+function addDevice(address, time) {
+    //if the list is already created for the "key", then uses it
+    //else creates new list for the "key" to store multiple values in it.
+    devices[address] = devices[address] || [];
+    var lastTime = devices[address];
+    var save = (time > lastTime);
+    if(save){
+      time.setMinutes(time.getMinutes()+10);
+      devices[address] = time;
+    }
+    return save;
 }
