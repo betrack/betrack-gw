@@ -29,16 +29,21 @@ noble.on('stateChange', function(state) {
   }
 });
 
-/*var TAGminutes = 0.1;
+var TAGminutes = 0.1;
 var packet = 0;
 setInterval(function() {
   console.log('Tag post every ' + TAGminutes + ' minutes.');
   var peripheral = [];
+  peripheral.advertisement = [];
+  peripheral.advertisement.serviceData = [];
+  peripheral.advertisement.serviceData[0] = [];
+  peripheral.advertisement.serviceData[0].data = [];
+  peripheral.advertisement.serviceData[0].data = Buffer.from([0,0,0,0,0,0,0,0,0,0,0]);
   peripheral.address = "11:11:11:11:11:11";
   peripheral.rssi = 0;
   peripheral.packet = (packet++);
   save(peripheral);
-}, TAGminutes * 60 * 1000);*/
+}, TAGminutes * 60 * 1000);
 
 noble.on('discover', function(peripheral) { 
   var address = peripheral.address;
@@ -52,35 +57,28 @@ noble.on('discover', function(peripheral) {
   }
 });
 
+var devices = {};
+
 function save(peripheral) {
   var buffer = peripheral.advertisement.serviceData[0].data;
   var batt = buffer.readUIntBE(1, 1);
   var temp = buffer.readIntBE(3, 2);
   var packet = buffer.readIntBE(6, 4);
   console.log('Batt:', batt, ' Temp:', temp, ' Packet:', packet);
+
   var time = new Date();
-  if( addDevice(peripheral.address, time) ){
+  devices[address] = devices[address] || [];
+  if(time > devices[address]){
     var timestamp = peripheral.address + '_' + time.toISOString();
-    time.setHours(time.getHours()-3);
-    var json = {address:peripheral.address, time: time.toISOString(), temp:temp, batt: batt, packet:packet};
+    var time4post = new Date(+time);
+    time4post.setHours(time4post.getHours()-3);
+    var json = {address:peripheral.address, time: time4post.toISOString(), temp:temp, batt: batt, packet:packet};
     jsonfile.writeFile('/data/tag/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
       if(err)
         console.error(err);
     });
+
+    time.setMinutes(time.getMinutes()+10);
+    devices[address] = time;
   }
-}
-
-var devices = {};
-
-function addDevice(address, time) {
-    //if the list is already created for the "key", then uses it
-    //else creates new list for the "key" to store multiple values in it.
-    devices[address] = devices[address] || [];
-    var lastTime = devices[address];
-    var save = (time > lastTime);
-    if(save){
-      time.setMinutes(time.getMinutes()+10);
-      devices[address] = time;
-    }
-    return save;
 }
