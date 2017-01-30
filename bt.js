@@ -67,8 +67,8 @@ function save(peripheral) {
   console.log('Batt:', batt, ' Temp:', temp, ' Packet:', packet);
 
   var time = new Date();
-  devices[address] = devices[address] || [];
-  if(time > devices[address]){
+  devices[peripheral.address] = devices[peripheral.address] || [];
+  if(time > devices[peripheral.address]){
     var timestamp = peripheral.address + '_' + time.toISOString();
     var time4post = new Date(+time);
     time4post.setHours(time4post.getHours()-3);
@@ -79,6 +79,6 @@ function save(peripheral) {
     });
 
     time.setMinutes(time.getMinutes()+10);
-    devices[address] = time;
+    devices[peripheral.address] = time;
   }
 }
