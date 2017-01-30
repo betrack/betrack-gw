@@ -9,7 +9,7 @@ var bt = require('./bt.js');
 var location = require('./location');
 var temperature = require('./temp');
 
-var GWminutes = 1;
+var GWminutes = 10;
 setInterval(function() {
   console.log('Gateway status every ' + GWminutes + ' minutes.');
   var time = new Date();
