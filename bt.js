@@ -82,3 +82,25 @@ function save(peripheral) {
     devices[peripheral.address] = time;
   }
 }
+
+setInterval(function() {
+  var time = new Date();
+  time.setMinutes(time.getMinutes()-20);
+  var newDevices = {};
+  for( d in devices) {
+    if(time > devices[d]){
+      console.log('Havent found ', d,' for a while now');
+      var timestamp = d + '_' + time.toISOString();
+      var time4post = new Date(+time);
+      var json = {address:d, time: time4post.toISOString(), temp:0.0, batt:0.0, packet:-1};
+      jsonfile.writeFile('/data/tag/'+ timestamp.replace(/[^a-z0-9]/gi, '_') + '.json',json,function(err){
+      if(err)
+        console.error(err);
+      });
+    }
+    else{
+      newDevices[d] = devices[d];
+    }
+  }
+  devices = newDevices;
+}, 1 * 1000); //Check every 10 min
