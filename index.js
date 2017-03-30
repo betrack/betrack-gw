@@ -5,9 +5,9 @@ var jsonfile = require('jsonfile');
 var chokidar = require('chokidar');
 var del = require('node-delete');
 
-//var bt = require('./bt.js');
-//var location = require('./location');
-//var temperature = require('./temp');
+var bt = require('./bt.js');
+var location = require('./location');
+var temperature = require('./temp');
 
 var GWminutes = 10;
 setInterval(function() {
@@ -22,10 +22,19 @@ setInterval(function() {
   });
 }, GWminutes * 60 * 1000);
 
+var publishDelay = 0;
+setInterval(function(){
+  if(publishDelay>0){
+    publishDelay-=10;
+    if(publishDelay<0)
+      publishDelay=0;
+  }
+},10*1000);
+
 client.on('connect', function() {
   console.log("MQTT connected");
 
-  chokidar.watch('/data/gw',{
+  chokidar.watch('data/gw',{
     persistent: true,
     ignored: /[\/\\]\./,
     ignoreInitial: false,
@@ -37,11 +46,13 @@ client.on('connect', function() {
         console.log(err);
       else{
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.lat.toFixed(7)+","+obj.lon.toFixed(7);
-        client.publish("gw/"+bt.address, state);
-        console.log(bt.address, state);
-        del(event, {force:true}, function (err, files) {
-          //console.log('Deleted file', files);
-        });
+        setTimeout(function(){
+          client.publish("gw/"+bt.address, state);
+          console.log(bt.address, state);
+          del(event, {force:true}, function (err, files) {
+            //console.log('Deleted file', files);
+          });
+        },(publishDelay++)*1000);
       }
     });
   });
