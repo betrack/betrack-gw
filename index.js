@@ -5,9 +5,9 @@ var jsonfile = require('jsonfile');
 var chokidar = require('chokidar');
 var del = require('node-delete');
 
-var bt = require('./bt.js');
-var location = require('./location');
-var temperature = require('./temp');
+//var bt = require('./bt.js');
+//var location = require('./location');
+//var temperature = require('./temp');
 
 var GWminutes = 10;
 setInterval(function() {
@@ -73,4 +73,29 @@ client.on('connect', function() {
 
 client.on('error', function(error) {
   console.log(error);
+  setTimeout(reboot,60000);
 });
+
+const isOnline = require('is-online');
+
+setInterval(function(){
+  isOnline().then(online => {
+    if(online){
+      console.log('Device online');
+    }
+    else{
+      console.log('Device offline');
+      reboot();
+    }
+    //=> true 
+  });
+},3600000); //Check for internet connectivity once every hour
+
+const { spawn } = require('child_process');
+
+function reboot(){
+  const deploySh = spawn('sh', [ 'reboot.sh' ], {
+    cwd: process.env.PWD,
+    env: Object.assign({}, process.env, { PATH: process.env.PATH + ':/usr/local/bin' })
+  });
+}
