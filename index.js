@@ -34,7 +34,7 @@ setInterval(function(){
 client.on('connect', function() {
   console.log("MQTT connected");
 
-  chokidar.watch('data/gw',{
+  chokidar.watch('/data/gw',{
     persistent: true,
     ignored: /[\/\\]\./,
     ignoreInitial: false,
