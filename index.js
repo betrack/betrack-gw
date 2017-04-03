@@ -29,7 +29,7 @@ setInterval(function(){
     if(publishDelay<0)
       publishDelay=0;
   }
-},10*1000);
+},15*1000);
 
 client.on('connect', function() {
   console.log("MQTT connected");
@@ -69,14 +69,16 @@ client.on('connect', function() {
         console.log(err);
       else{
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.batt.toFixed(1)+","+obj.packet;
-        if(obj.packet === -1)
-          client.publish("tag/"+obj.address+"/00:00:00:00:00:00", state);
-        else
-          client.publish("tag/"+obj.address+"/"+bt.address, state);
-        console.log(obj.address,bt.address, state);
-        del(event, {force:true}, function (err, files) {
-          //console.log('Deleted file', files);
-        });
+        setTimeout(function(){
+          if(obj.packet === -1)
+            client.publish("tag/"+obj.address+"/00:00:00:00:00:00", state);
+          else
+            client.publish("tag/"+obj.address+"/"+bt.address, state);
+          console.log(obj.address,bt.address, state);
+          del(event, {force:true}, function (err, files) {
+            //console.log('Deleted file', files);
+          });
+        },(publishDelay++)*1000);
       }
     });
   });
