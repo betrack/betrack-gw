@@ -65,7 +65,7 @@ jsonfile.readFile(devicesFile, function(err, obj) {
     devices = obj.devices;
     for( d in devices) {
       var time = new Date(devices[d]);
-      time.setHours(time.getHours()-3);
+      //time.setHours(time.getHours()-3);
       devices[d]=time;
     }
   }
