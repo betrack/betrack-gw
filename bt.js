@@ -59,6 +59,13 @@ noble.on('discover', function(peripheral) {
 
 var devices = {};
 
+const devicesFile = "/data/devices.json";
+jsonfile.readFile(devicesFile, function(err, obj) {
+  if(!err){
+    devices = obj.devices;
+  }
+});
+
 function save(peripheral) {
   var buffer = peripheral.advertisement.serviceData[0].data;
   var batt = buffer.readUIntBE(1, 1);
@@ -80,6 +87,12 @@ function save(peripheral) {
 
     time.setMinutes(time.getMinutes()+10);
     devices[peripheral.address] = time;
+    
+    var devicesJSON = {devices: devices};
+    jsonfile.writeFile(devicesFile,devicesJSON,function(err){
+      if(err)
+        console.error(err);
+    });
   }
 }
 
@@ -103,4 +116,9 @@ setInterval(function() {
     }
   }
   devices = newDevices;
+  var devicesJSON = {devices: devices};
+  jsonfile.writeFile(devicesFile,devicesJSON,function(err){
+    if(err)
+      console.error(err);
+  });
 }, 1 * 1000); //Check every 10 min
