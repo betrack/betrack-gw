@@ -63,6 +63,11 @@ const devicesFile = "/data/devices.json";
 jsonfile.readFile(devicesFile, function(err, obj) {
   if(!err){
     devices = obj.devices;
+    for( d in devices) {
+      var time = new Date(devices[d]);
+      time.setHours(time.getHours()-3);
+      devices[d]=time;
+    }
   }
 });
 
