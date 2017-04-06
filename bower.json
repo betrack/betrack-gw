@@ -11,6 +11,7 @@
     "node_modules",
     "bower_components",
     "src/public/bower_components",
+    "resin-wifi-connect/public/bower_components",
     "test",
     "tests"
   ],
