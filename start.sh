@@ -25,8 +25,21 @@ mkdir -p /data/tag
 
 echo "Resin-wifi-connect"
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
-sleep 1
-node resin-wifi-connect/app.js --clear=true
+# Look for the network for a while
+GOTNET=0
+for ((i=0; i<60; i++))
+do
+    if curl --output /dev/null --silent --head --fail http://www.google.com; then
+        GOTNET=1
+        break
+    fi
+    sleep 1
+done
+
+# If no network, start resin-wifi-connect
+if [ "$GOTNET" -eq 0 ]; then
+    node resin-wifi-connect/app.js --clear=true
+fi
 
 # At this point the WiFi connection has been configured and the device has
 # internet - unless the configured WiFi connection is no longer available.
