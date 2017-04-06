@@ -121,4 +121,4 @@ setInterval(function() {
     if(err)
       console.error(err);
   });
-}, 1 * 1000); //Check every 10 min
+}, 10 * 60 * 1000); //Check every 10 min
