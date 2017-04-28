@@ -44,7 +44,7 @@ client.on('connect', function() {
     jsonfile.readFile(event, function(err, obj) {
       if(err)
         console.log(err);
-      else{
+      else if(obj.time && obj.temp && obj.lat && obj.lon){
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.lat.toFixed(7)+","+obj.lon.toFixed(7);
         setTimeout(function(){
           client.publish("gw/"+bt.address, state);
@@ -67,7 +67,7 @@ client.on('connect', function() {
     jsonfile.readFile(event, function(err, obj) {
       if(err)
         console.log(err);
-      else{
+      else if(obj.time && obj.temp && obj.batt && obj.packet){
         var state = obj.time+","+obj.temp.toFixed(1)+","+obj.batt.toFixed(1)+","+obj.packet;
         setTimeout(function(){
           if(obj.packet === -1)
